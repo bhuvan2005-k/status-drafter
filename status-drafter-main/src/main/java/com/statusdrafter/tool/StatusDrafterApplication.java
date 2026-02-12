@@ -30,7 +30,7 @@ public class StatusDrafterApplication {
                 userRepo.save(admin);
 
                 // Normal Employee
-                User user = new User();
+                User user = new User(); 
                 user.setUsername("jdoe");
                 user.setFullName("John Doe");
                 user.setEmail("john@example.com");
