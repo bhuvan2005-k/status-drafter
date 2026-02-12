@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Status Drafter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+
+        th {
+            text-align: left;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 1.25rem;
+            border-bottom: 2px solid var(--glass-border);
+            background: rgba(15, 23, 42, 0.3);
+            font-weight: 600;
+        }
+
+        td {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--glass-border);
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        tr:hover {
+            background: rgba(129, 140, 248, 0.05);
+        }
+
+        .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .mini-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .status-empty {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .blockers-text {
+            color: var(--accent-error);
+            font-weight: 500;
+        }
+
+        .hours-cell {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-group">
+                <h1>Admin Dashboard</h1>
+                <p>Team Consolidated Status Reports</p>
+            </div>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <a href="index.html" class="btn-primary"
+                    style="background: rgba(255,255,255,0.05); text-decoration: none;">My Daily Status</a>
+                <div class="user-profile">
+                    <div class="avatar" style="background: var(--accent-warning);">AD</div>
+                    <span>System Admin</span>
+                </div>
+                <button class="btn-primary" onclick="window.location.href='/logout'"
+                    style="background: var(--accent-error); padding: 0.5rem 1rem; font-size: 0.8rem;">Logout</button>
+            </div>
+        </header>
+
+        <section class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <div class="card-title" style="margin-bottom: 0;">👥 Team Updates (Today)</div>
+                <div style="display: flex; gap: 0.75rem;">
+                    <button class="btn-primary" onclick="window.location.href='/api/v1/status/export/csv'"
+                        style="font-size: 0.8rem; padding: 0.7rem 1.5rem;">Export CSV</button>
+                    <button class="btn-primary" onclick="window.location.href='/api/v1/status/export/txt'"
+                        style="background: rgba(255,255,255,0.05); font-size: 0.8rem; padding: 0.7rem 1.5rem;">Export TXT</button>
+                </div>
+            </div>
+
+            <div id="noData" style="text-align: center; color: var(--text-muted); padding: 3rem; display: none;">
+                <p style="font-size: 1.1rem;">📭 No status updates received for today yet.</p>
+                <p style="margin-top: 0.5rem;">Check back later or ask team members to submit their updates.</p>
+            </div>
+
+            <table id="statusTable">
+                <thead>
+                    <tr>
+                        <th style="width: 15%;">Employee</th>
+                        <th style="width: 25%;">Yesterday</th>
+                        <th style="width: 25%;">Today's Plan</th>
+                        <th style="width: 25%;">Blockers</th>
+                        <th style="width: 10%; text-align: center;">Hrs</th>
+                    </tr>
+                </thead>
+                <tbody id="adminStatusBody">
+                    <!-- Data injected here -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script>
+        async function loadDailyReport() {
+            try {
+                const response = await fetch('/api/v1/status/daily');
+                if (!response.ok) throw new Error('Unauthorized');
+                const data = await response.json();
+
+                const body = document.getElementById('adminStatusBody');
+                const noData = document.getElementById('noData');
+                const table = document.getElementById('statusTable');
+
+                if (data.length === 0) {
+                    table.style.display = 'none';
+                    noData.style.display = 'block';
+                    return;
+                }
+
+                table.style.display = 'table';
+                noData.style.display = 'none';
+                body.innerHTML = '';
+
+                data.forEach(item => {
+                    const row = document.createElement('tr');
+                    const userName = item.userName || 'Unknown';
+                    const userInitial = userName ? userName.charAt(0).toUpperCase() : '?';
+                    const yesterday = item.formattedReport.yesterday.length > 0 
+                        ? item.formattedReport.yesterday.join(', ') 
+                        : '<span class="status-empty">-</span>';
+                    const today = item.formattedReport.today.length > 0 
+                        ? item.formattedReport.today.join(', ') 
+                        : '<span class="status-empty">-</span>';
+                    const blockers = item.formattedReport.blockers.length > 0 
+                        ? `<span class="blockers-text">${item.formattedReport.blockers.join(', ')}</span>` 
+                        : '<span class="status-empty">None</span>';
+                    const hours = item.formattedReport.hoursSpent || 0;
+
+                    row.innerHTML = `
+                        <td>
+                            <div class="user-cell">
+                                <div class="mini-avatar">${userInitial}</div>
+                                ${userName}
+                            </div>
+                        </td>
+                        <td>${yesterday}</td>
+                        <td>${today}</td>
+                        <td>${blockers}</td>
+                        <td style="text-align: center;" class="hours-cell">${hours}h</td>
+                    `;
+                    body.appendChild(row);
+                });
+            } catch (err) {
+                console.error(err);
+                window.location.href = '/login.html';
+            }
+        }
+        loadDailyReport();
+    </script>
+</body>
+
+</html>

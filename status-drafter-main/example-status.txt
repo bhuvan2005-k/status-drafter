@@ -1,0 +1,34 @@
+### 📝 Status Examples for Demo - Status Drafter Tool
+
+1. The "Busy Backend" Session
+Yesterday I worked on the API integration for 5h. I completed the user controller logic. Today I plan to optimize the DB queries. I am stuck on the JPA circular dependency issue.
+
+2. The "Planning" Morning Update
+I finished the frontend wireframes yesterday. Spent 3 hours on CSS. Today I will do the button components. No blockers for now!
+
+3. The "Blocker" Heavy Alert
+Yesterday I worked on the payment gateway for 2h. I am blocked on the Stripe API key verification. Today I plan to reach out to the DevOps team. Spent 1 hr on documentation.
+
+4. Concise Slack Style
+worked on bug #402 for 4.5h. fixed the null pointer exception. will do the unit tests today. stuck on the mock server setup.
+
+5. Multi-tasking Email Style
+Hi team, yesterday I completed the weekly report (2h) and finished the code review for Sarah (1h). Today I am going to focus on the migration script. I have an issue with the local MySQL instance.
+
+6. The "Copy-Paste" from Excel
+Completed the login validation. Worked on password encryption for 3.5 hrs. Plan to start the logout flow today. No issues.
+
+7. Bullet Point Style
+- finished the icon pack update
+- worked on the landing page for 6h
+- going to start the footer today
+- stuck on responsive layout for mobile
+
+8. Technical Focus
+Yesterday: completed the Dockerfile configuration. Today: plan to set up the CI/CD pipeline. Current issue: Jenkins server is down. Spent 4h total yesterday.
+
+9. The "Short & Sweet"
+worked on the logo for 1h. going to finish the splash screen today. no blockers.
+
+10. The "Messy Mixed" Format
+I finished the onboarding docs yesterday (spent 2 hours). I'm going to do the security audit today. Also, I am blocked on the new Slack token. completed the team meeting for 1h.

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Status Drafter Tool</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .signup-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        .signup-card {
+            width: 100%;
+            max-width: 500px;
+            animation: fadeInScale 0.6s ease-out;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--glass-border);
+            border-radius: 0.75rem;
+            color: var(--text-main);
+            padding: 1rem;
+            outline: none;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            background: rgba(15, 23, 42, 0.7);
+        }
+
+        .form-input.optional {
+            background: rgba(15, 23, 42, 0.3);
+        }
+
+        .error-msg,
+        .success-msg {
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            display: none;
+        }
+
+        .error-msg {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+        }
+
+        .success-msg {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #86efac;
+        }
+
+        .already-account {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .already-account a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .already-account a:hover {
+            color: var(--secondary);
+        }
+
+        .optional-tag {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: 400;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="signup-container">
+        <div class="card signup-card">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h1
+                    style="font-size: 2rem; font-weight: 800; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+                    Status Drafter</h1>
+                <p style="color: var(--text-muted);">Create your account</p>
+            </div>
+
+            <div id="error" class="error-msg"></div>
+            <div id="success" class="success-msg"></div>
+
+            <form id="signupForm">
+                <div class="form-group">
+                    <label class="form-label" for="username">Username *</label>
+                    <input type="text" id="username" name="username" class="form-input" placeholder="Choose a username"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">Email *</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="your.email@company.com"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="fullName">Full Name <span class="optional-tag">(optional)</span></label>
+                    <input type="text" id="fullName" name="fullName" class="form-input optional"
+                        placeholder="John Doe">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="teamName">Team Name <span class="optional-tag">(optional)</span></label>
+                    <input type="text" id="teamName" name="teamName" class="form-input optional"
+                        placeholder="Development Team">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password *</label>
+                    <input type="password" id="password" name="password" class="form-input"
+                        placeholder="At least 6 characters" required minlength="6">
+                </div>
+
+                <button type="submit" class="btn-primary" style="width: 100%;">Create Account</button>
+            </form>
+
+            <div class="already-account">
+                Already have an account? <a href="login.html">Login here</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('signupForm');
+        const errorDiv = document.getElementById('error');
+        const successDiv = document.getElementById('success');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Hide previous messages
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+
+            // Get form data
+            const formData = {
+                username: document.getElementById('username').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                fullName: document.getElementById('fullName').value.trim() || null,
+                teamName: document.getElementById('teamName').value.trim() || null,
+                password: document.getElementById('password').value
+            };
+
+            // Client-side validation
+            if (formData.password.length < 6) {
+                showError('Password must be at least 6 characters long');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/v1/auth/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showSuccess(data.message);
+                    form.reset();
+                    // Redirect to login after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+                } else {
+                    showError(data.message);
+                }
+            } catch (error) {
+                showError('An error occurred. Please try again later.');
+                console.error('Signup error:', error);
+            }
+        });
+
+        function showError(message) {
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            errorDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function showSuccess(message) {
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            successDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
+</body>
+
+</html>

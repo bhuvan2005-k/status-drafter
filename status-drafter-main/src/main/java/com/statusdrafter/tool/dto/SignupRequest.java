@@ -1,0 +1,12 @@
+package com.statusdrafter.tool.dto;
+
+import lombok.Data;
+
+@Data
+public class SignupRequest {
+    private String username;
+    private String email;
+    private String fullName;
+    private String password;
+    private String teamName;
+}

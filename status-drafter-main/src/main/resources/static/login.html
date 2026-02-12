@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Status Drafter Tool</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .login-container {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            animation: fadeInScale 0.6s ease-out;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--glass-border);
+            border-radius: 0.75rem;
+            color: var(--text-main);
+            padding: 1rem;
+            margin-bottom: 1.25rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+        }
+
+        .error-msg {
+            color: var(--accent-error);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            display: none;
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .signup-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .signup-link a:hover {
+            color: var(--secondary);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="card login-card">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h1
+                    style="font-size: 2rem; font-weight: 800; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+                    Status Drafter</h1>
+                <p style="color: var(--text-muted);">Sign in to your account</p>
+            </div>
+
+            <div id="error" class="error-msg">Invalid username or password</div>
+
+            <form action="/login" method="post">
+                <input type="text" name="username" class="form-input" placeholder="Username" required>
+                <input type="password" name="password" class="form-input" placeholder="Password" required>
+                <button type="submit" class="btn-primary" style="width: 100%;">Login</button>
+            </form>
+
+            <div class="signup-link">
+                Don't have an account? <a href="signup.html">Sign up here</a>
+            </div>
+
+            <div
+                style="margin-top: 2rem; padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 0.75rem; font-size: 0.8rem; color: var(--text-muted);">
+                <p><strong>Demo Credentials:</strong></p>
+                <p>Admin: <code>admin</code> / <code>admin123</code></p>
+                <p>User: <code>jdoe</code> / <code>user123</code></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('error')) {
+            document.getElementById('error').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>
